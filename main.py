@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 from http.server import HTTPServer
 import socket 
+from requests import get
 
 class HttpProcessor(BaseHTTPRequestHandler):
 
@@ -17,9 +18,10 @@ class HttpProcessor(BaseHTTPRequestHandler):
             self.saveHeaders()
             self.wfile.write(bytes('hello from demo app!', 'utf-8'))
         elif self.path == '/getIP':
+            extIP = get('https://api.ipify.org').content.decode('utf8')
             ipAddr=socket.gethostbyname(socket.gethostname())
             self.saveHeaders()
-            self.wfile.write(bytes(f"Hello! My Ip is {ipAddr}!", 'utf-8'))
+            self.wfile.write(bytes(f"Internal: {ipAddr}!\nExternal: {extIP}\n", 'utf-8'))
         elif self.path == '/getHost':
             hostname=socket.gethostname() 
             self.saveHeaders()
