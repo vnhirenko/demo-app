@@ -1,0 +1,30 @@
+replicaCount: 2
+
+image:
+  repository: vkmellon/demo_app
+  pullPolicy: IfNotPresent
+  tag: "1.0.0"
+
+serviceAccount:
+  create: false
+
+service:
+  type: ClusterIP
+  port: 8080
+deployment:
+  port: 8080
+
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: "llab.com"
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
